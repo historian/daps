@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+begin
+  require 'daps'
+rescue LoadError
+  require 'rubygems'
+  $:.unshift(File.expand_path('../../lib', __FILE__))
+  require 'daps'
+end
+
+Daps::Application.start
