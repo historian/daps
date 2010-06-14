@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+begin
+  require 'rsync-adhoc'
+rescue LoadError
+  require 'rubygems'
+  $:.unshift(File.expand_path('../../lib', __FILE__))
+  require 'rsync-adhoc'
+end
+
+RsyncAdhoc::Application.start

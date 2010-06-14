@@ -1,0 +1,8 @@
+
+erlang/rel/capricorn
+
+*.log
+*.dump
+
+*.beam
+*.gem
