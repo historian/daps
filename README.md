@@ -1,9 +1,9 @@
-daps(7) -- semi automatic deployment of rails applications
-===============================================================
+daps(7) -- Like taps but for data files
+=======================================
 
 ## INSTALL
 
 Install with Rubygems:
 
     $ [sudo] gem install daps
-    $ dapsd
+    $ daps
