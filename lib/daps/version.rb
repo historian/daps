@@ -1,3 +1,3 @@
 module Daps
-  VERSION = '0.0.1.a.3'
+  VERSION = '0.0.1.a.4'
 end

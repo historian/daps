@@ -1,10 +1,8 @@
 class Daps::Application < Thor
 
   desc "server DIR [TOKEN]", "Start the daps server"
-  method_option :port, :type => :numeric, :default => 5001
+  method_option :port, :type => :numeric, :default => 0
   def server(dir, token=nil)
-    token ||= Digest::SHA1.hexdigest([Time.now, rand(1<<100)].join('--'))
-    puts "Token: #{token}"
     server = Daps::Server.new(dir, token, options.port)
     server.start!
   end
