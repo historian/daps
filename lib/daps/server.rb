@@ -58,7 +58,7 @@ class Daps::Server
     end
 
     def stream_chunks
-      if data = @archive.read(1024 * 8)
+      if data = @archive.read(1024 * 156)
         render data
         EM.add_timer(0.01) { stream_chunks }
       else
