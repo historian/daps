@@ -6,9 +6,8 @@ class Daps::Client
 
   def start!
     system(%{
-      wget -T 300 -O /tmp/daps-#{@token}-client.tar.gz http://#{@remote}:#{@port}/#{@token} &&
+      wget -T 600 -O /tmp/daps-#{@token}-client.tar.gz http://#{@remote}:#{@port}/#{@token} &&
       tar --directory=#{@dir} -xzf /tmp/daps-#{@token}-client.tar.gz ;
-      wget -q -O /dev/null http://#{@remote}:#{@port}/#{@token}/close ;
       rm -f /tmp/daps-#{@token}-client.tar.gz
     })
   end
