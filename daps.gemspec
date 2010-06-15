@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
 
   s.executables = %w( daps )
 
-  s.add_runtime_dependency 'eventmachine', '= 0.12.10'
-  s.add_runtime_dependency 'thor',         '= 0.13.6'
+  s.add_runtime_dependency 'sinatra', '= 1.0'
+  s.add_runtime_dependency 'thin',    '= 1.2.7'
+  s.add_runtime_dependency 'thor',    '= 0.13.6'
 end
