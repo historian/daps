@@ -37,6 +37,30 @@ task :man => :load_version do
   sh "ronn -w -s toc man/*.ronn"
 end
 
+desc 'Publish to github pages'
+task :pages => :man do
+  puts '----------------------------------------------'
+  puts 'Rebuilding pages ...'
+  verbose(false) {
+    rm_rf 'pages'
+    push_url = `git remote show origin`.grep(/Push.*URL/).first[/git@.*/]
+    sh "
+      set -e
+      git fetch -q origin
+      rev=$(git rev-parse origin/gh-pages)
+      git clone -q -b gh-pages . pages
+      cd pages
+      git reset --hard $rev
+      rm -f daps*.html index.html
+      cp -rp ../man/daps*.html ./
+      # cp -p ronn.7.html index.html
+      git add -u daps*.html # index.html
+      git commit -m 'rebuild manual'
+      git push #{push_url} gh-pages
+    ", :verbose => false
+  }
+end
+
 begin
   require 'yard'
   YARD::Rake::YardocTask.new do |t|

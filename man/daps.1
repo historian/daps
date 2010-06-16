@@ -1,0 +1,55 @@
+.\" generated with Ronn/v0.6.6
+.\" http://github.com/rtomayko/ronn/
+.
+.TH "DAPS" "1" "June 2010" "Simon Menke" "Daps 0.0.2"
+.
+.SH "NAME"
+\fBdaps\fR \- Pull files from any remote machine
+.
+.SH "SYNOPSIS"
+\fBdaps\fR \fBhelp\fR \fItask\fR
+.
+.br
+\fBdaps\fR \fBserver\fR \fIsrc\fR [\fItoken\fR] [\-\-port=\fIport\fR]
+.
+.br
+\fBdaps\fR \fBpull\fR \fIsrc\fR \fIdst\fR
+.
+.SH "OPTIONS"
+.
+.TP
+\fB\-\-port\fR=\fIport\fR
+Choose a specific port number to run the server on\. when no port number is chosen a random port will be used\.
+.
+.SH "USAGE"
+The first thing to do is start the daps server and point it to a directory you want to pull\.
+.
+.IP "" 4
+.
+.nf
+
+$ daps server /home/joe/movies
+URI: daps://joe\.local:7587/b1c11e2301ed96bd1f0
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Daps will tell you what the pull uri is (although you should double check the domain)\.
+.
+.P
+On your other machine you start pulling the data\.
+.
+.IP "" 4
+.
+.nf
+
+$ daps pull daps://joe\.local:7587/b1c11e2301ed96bd1f0 /home/jane/movies
+.
+.fi
+.
+.IP "" 0
+.
+.P
+When the transfer is completed both the server and the client will be shutdown\.

@@ -1,0 +1,28 @@
+daps(1) -- Pull files from any remote machine
+=============================================
+
+## SYNOPSIS
+
+`daps` `help` _task_<br>
+`daps` `server` _src_ [_token_] [--port=<port>]<br>
+`daps` `pull` _src_ _dst_
+
+## OPTIONS
+
+  * `--port`=<port>:
+    Choose a specific port number to run the server on. when no port number is chosen a random port will be used.
+
+## USAGE
+
+The first thing to do is start the daps server and point it to a directory you want to pull.
+
+    $ daps server /home/joe/movies
+    URI: daps://joe.local:7587/b1c11e2301ed96bd1f0
+
+Daps will tell you what the pull uri is (although you should double check the domain).
+
+On your other machine you start pulling the data.
+
+    $ daps pull daps://joe.local:7587/b1c11e2301ed96bd1f0 /home/jane/movies
+
+When the transfer is completed both the server and the client will be shutdown.
