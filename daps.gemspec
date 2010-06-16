@@ -11,8 +11,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Simon Menke"]
   s.email       = ["simon.menke@gmail.com"]
   s.homepage    = "http://github.com/fd/daps"
-  s.summary     = "Ad hoc rsync server"
-  s.description = "Ad hoc rsync server."
+  s.summary     = "Like taps but for files"
+  s.description = "Like taps but for files."
 
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "daps"
