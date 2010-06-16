@@ -53,11 +53,13 @@ task :pages => :man do
       git reset --hard $rev
       rm -f daps*.html index.html
       cp -rp ../man/daps*.html ./
-      # cp -p ronn.7.html index.html
-      git add -u daps*.html # index.html
+      cp -p daps.1.html index.html
+      git add daps*.html index.html
+      git add -u daps*.html index.html
       git commit -m 'rebuild manual'
       git push #{push_url} gh-pages
     ", :verbose => false
+    rm_rf 'pages'
   }
 end
 
