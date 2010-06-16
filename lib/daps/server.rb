@@ -22,57 +22,63 @@ class Daps::Server
   end
 
   class ArchiveStreamer < Cramp::Controller::Action
-    before_start :verify_token, :build_archive
-    on_start  :prepare_stream
+    before_start :verify_token
+    on_start  :open_stream
     on_finish :terminate
 
     def verify_token
       @token = File.basename(@env['PATH_INFO'])
       if @env['daps.token'] != @token
-        halt 403, {}, 'back off!!'
+        halt 403, {'Content-Type' => 'text/html'}, 'back off!!'
       else
         yield
       end
     end
 
-    def build_archive
-      puts "Compressing files..."
-      system(%{
-        cd #{@env['daps.dir']} ;
-        tar -czf /tmp/daps-#{@token}-server.tar.gz . ;
-      })
-
-      @length  = File.size("/tmp/daps-#{@token}-server.tar.gz")
-      @archive = File.open("/tmp/daps-#{@token}-server.tar.gz")
-
-      yield
-    end
-
     def respond_with
-      [200, {'Content-Type' => 'text/html', 'Content-Length' => @length.to_s}]
+      [200, {'Content-Type' => 'application/x-gzip', 'Transfer-Encoding' => 'chunked'}]
     end
 
-    def prepare_stream
+    def open_stream
       puts "Transferring archive..."
-      stream_chunks
-    end
-
-    def stream_chunks
-      if data = @archive.read(1024 * 156)
-        render data
-        EM.add_timer(0.01) { stream_chunks }
-      else
-        finish
-      end
+      @pipe = EM.popen('tar -czf - .', Daps::Server::Pipe, self)
     end
 
     def terminate
+      @pipe.terminate if @pipe
       EM.next_tick {
         if @env['daps.token'] == @token
-          File.unlink("/tmp/daps-#{@token}-server.tar.gz")
           EM.stop_event_loop
         end
       }
+    end
+
+    def render(data)
+      term = "\r\n"
+      size = Rack::Utils.bytesize(data)
+      super([size.to_s(16), term, data, term].join)
+    end
+
+  end
+
+  module Pipe
+
+    def initialize(connection)
+      @connection = connection
+      # super
+    end
+
+    def receive_data(data)
+      @connection.render data
+    end
+
+    def unbind
+      @connection.render('')
+      EM.next_tick{ @connection.finish }
+    end
+
+    def terminate
+      Process.kill('INT', get_pid) rescue nil
     end
 
   end
