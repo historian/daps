@@ -26,11 +26,14 @@ class Daps::Server
     on_start  :open_stream
     on_finish :terminate
 
+    @@activated = false
+
     def verify_token
       @token = File.basename(@env['PATH_INFO'])
-      if @env['daps.token'] != @token
+      if @env['daps.token'] != @token or @@activated
         halt 403, {'Content-Type' => 'text/html'}, 'back off!!'
       else
+        @@activated = true
         yield
       end
     end
